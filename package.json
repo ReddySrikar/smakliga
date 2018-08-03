@@ -1,0 +1,17 @@
+{
+  "name": "smakliga",
+  "version": "1.0.0",
+  "description": "Smakliga - Sök den godaste rätter recept i hela världen. Mer än en tilfälliga 1000000 recept.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
+  },
+  "author": "Srikar Reddy Nadikattu",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {}
+}
