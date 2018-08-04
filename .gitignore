@@ -1,2 +1,5 @@
-# ignore an entire directory
+# ignore an entire directory : node_modules
 /node_modules/
+
+# ignore bundle.js and index.html in dist
+/dist/
