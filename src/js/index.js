@@ -1,5 +1,7 @@
 // Global app controller
+import Search from './models/Search';
 
-import x from './tes';
+const biryaniSearch = new Search('biryani');
 
-console.log('I imported '+ x+ 'from another module. Yay!');
+
+biryaniSearch.getResults();
