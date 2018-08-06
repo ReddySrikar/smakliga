@@ -1,4 +1,6 @@
 // Global app controller
+import {elements} from './views/base';
+import * as SearchView from './views/SearchView';
 import Search from './models/Search';
 
 // Make this state persistent
@@ -14,26 +16,28 @@ const state = {};
 
 const fetchCurrentRecipes = async () => {
   //TODO
-  const query = "biryani"; // Get the query from the viewport
+  const query = SearchView.getInput(); // Get the query from the viewport
 
   // Create Search object
   if(query) {
     state.search = new Search(query);
   }
 
+  console.log(SearchView.shortenTitle('Pasta Rigotti Gewehr'));
+
   //Get the results
   // This is an async so it return a "promise" regardless of any assignements or explicit returns programmed into it.
   await state.search.getResults();
 
-  // TODO:Render the dropdown table UI
+  SearchView.clearInput();
+  SearchView.clearResults();
 
-  // Append the results to the UI: We console log it for now
-  state.search.recipes.map((a) => console.log(a.title));
+  SearchView.renderResults(state.search.recipes);
 }
 
-const searchEle = document.querySelector('.search');
+// const searchEle = document.querySelector('.search');
 
-searchEle.addEventListener('submit', (evt) => {
+elements.search.addEventListener('submit', (evt) => {
   evt.preventDefault();
   fetchCurrentRecipes();
 });
