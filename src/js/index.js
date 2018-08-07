@@ -23,12 +23,10 @@ const fetchCurrentRecipes = async () => {
     state.search = new Search(query);
   }
 
-  console.log(SearchView.shortenTitle('Pasta Rigotti Gewehr'));
-
   //Get the results
   // This is an async so it return a "promise" regardless of any assignements or explicit returns programmed into it.
   await state.search.getResults();
-
+  
   SearchView.clearInput();
   SearchView.clearResults();
 
@@ -41,3 +39,13 @@ elements.search.addEventListener('submit', (evt) => {
   evt.preventDefault();
   fetchCurrentRecipes();
 });
+
+elements.resultsPages.addEventListener('click', evt => {
+    const btn = evt.target.closest('.btn-inline');
+    if(btn) {
+      const goToPage = parseInt(btn.dataset.goto, 10);
+      SearchView.clearResults();
+      SearchView.renderResults(state.search.recipes, goToPage);
+    }
+    //renderResults(state.search.recipes, evt.target.id)
+  });
