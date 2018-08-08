@@ -28,9 +28,9 @@ export const shortenTitle = (tit, limit = 17) => {
 const renderRecipe = el => {
      const markup = `
           <li>
-               <a class="results__link results__link--active" href=${el.id}>
+               <a class="results__link results__link--active" href="#${el.recipe_id}">
                     <figure class="results__fig">
-                         <img src=${el.image_url} alt=${el.title}>
+                         <img src="${el.image_url}" alt="${el.title}">
                     </figure>
                     <div class="results__data">
                          <h4 class="results__name">${shortenTitle(el.title)}</h4>
