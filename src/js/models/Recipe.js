@@ -71,7 +71,7 @@ export default class Recipe {
         }
         // If unit is present (which implies number is also present!)
       } else if (unitIndex > -1) {
-        let arrCount = currIngArray.slice(0, unitIndex);
+        const arrCount = currIngArray.slice(0, unitIndex);
         let count;
         if(arrCount.length === 1) {
           count = eval(currIngArray[0].replace('-', '+'));

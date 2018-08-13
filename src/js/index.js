@@ -3,6 +3,7 @@ import {elements} from './views/base';
 import * as SearchView from './views/SearchView';
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import * as RecipeView from './views/RecipeView';
 
 // Make this state persistent
 /** Global State object
@@ -49,6 +50,7 @@ const controlRecipe = async () => {
 
     // TODO:
     // Prepare UI for changes i.e. clear the previous recipe data and render the loader
+    RecipeView.clearRecipe();
 
     // Create Recipe object
     state.recipe = new Recipe(id);
@@ -57,17 +59,17 @@ const controlRecipe = async () => {
       // Fetch recipe data
       await state.recipe.getRecipe();
 
-    state.recipe.calculateTime();
-    state.recipe.calculateServings();
+      state.recipe.calculateTime();
+      state.recipe.calculateServings();
 
-    // TODO:
-    // Parse ingredients to make them uniform
-    state.recipe.parseIngredients();
+      // Parse ingredients to make them uniform
+      state.recipe.parseIngredients();
 
-      // FIXME:
       // Render recipe to UI
-      console.log(state.recipe);
+      RecipeView.logRecipe(state.recipe);
+      RecipeView.renderRecipe(state.recipe);
     } catch(error) {
+      // Alert the error
       console.log(error);
       alert('Oopsy doopsy! Error processing recipe!')
     }
