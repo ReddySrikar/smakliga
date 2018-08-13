@@ -44,12 +44,6 @@ const renderRecipe = el => {
      elements.resultsList.insertAdjacentHTML('beforeend', markup);
 };
 
-export const renderResults = recipes => {
-     recipes.forEach(element => {
-          renderRecipe(element);
-     });
-};
-
 const createButton = (page, type) => `
      <button class="btn-inline results__btn--${type}" id=${page} data-goto=${page}>
           <span>Page ${page}</span>

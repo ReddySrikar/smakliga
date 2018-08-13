@@ -1,5 +1,5 @@
 // Global app controller
-import {elements} from './views/base';
+import { elements, renderLoader, clearLoader} from './views/base';
 import * as SearchView from './views/SearchView';
 import Search from './models/Search';
 import Recipe from './models/Recipe';
@@ -23,16 +23,20 @@ const controlSearch = async () => {
     state.search = new Search(query);
   }
 
+  // const searchEle = document.querySelector('.search');
+  SearchView.clearInput();
+  SearchView.clearResults();
+  renderLoader(elements.results);
+
   // Get the results
   // This is an async so it return a "promise" regardless of any assignements or explicit returns programmed into it.
   try{
     await state.search.getResults();
-
-    SearchView.clearInput();
-    SearchView.clearResults();
+    clearLoader();
 
     SearchView.renderResults(state.search.results);
   } catch(error) {
+    console.log(error);
     alert('Oopsy doopsy! Something wrong with the search!')
   }
 };
@@ -47,7 +51,7 @@ elements.resultsPages.addEventListener('click', evt => {
   if(btn) {
     const goToPage = parseInt(btn.dataset.goto, 10);
     SearchView.clearResults();
-    SearchView.renderResults(state.search.recipes, goToPage);
+    SearchView.renderResults(state.search.results, goToPage);
   }
 });
 
