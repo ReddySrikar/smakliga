@@ -1,5 +1,5 @@
 // Global app controller
-import {elements} from './views/base';
+import { elements, renderLoader, clearLoader} from './views/base';
 import * as SearchView from './views/SearchView';
 import Search from './models/Search';
 
@@ -26,14 +26,24 @@ const fetchCurrentRecipes = async () => {
   //Get the results
   // This is an async so it return a "promise" regardless of any assignements or explicit returns programmed into it.
   await state.search.getResults();
-  
+
+  // const searchEle = document.querySelector('.search');
   SearchView.clearInput();
   SearchView.clearResults();
+  renderLoader(elements.results);
 
-  SearchView.renderResults(state.search.recipes);
-}
+  // Get the results
+  // This is an async so it return a "promise" regardless of any assignements or explicit returns programmed into it.
+  try{
+    await state.search.getResults();
+    clearLoader();
 
-// const searchEle = document.querySelector('.search');
+    SearchView.renderResults(state.search.results);
+  } catch(error) {
+    console.log(error);
+    alert('Oopsy doopsy! Something wrong with the search!')
+  }
+};
 
 elements.search.addEventListener('submit', (evt) => {
   evt.preventDefault();
