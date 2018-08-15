@@ -1,9 +1,9 @@
 // Global app controller
 import { elements, renderLoader, clearLoader} from './views/base';
-import * as SearchView from './views/SearchView';
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as RecipeView from './views/RecipeView';
+import * as SearchView from './views/SearchView';
 
 // Make this state persistent
 /** Global State object
@@ -59,11 +59,11 @@ elements.resultsPages.addEventListener('click', evt => {
 const controlRecipe = async () => {
   const id = window.location.hash.replace('#', '');
   if(id){
-    console.log(id);
 
     // TODO:
     // Prepare UI for changes i.e. clear the previous recipe data and render the loader
     RecipeView.clearRecipe();
+    renderLoader(elements.recipeTab);
 
     // Create Recipe object
     state.recipe = new Recipe(id);
@@ -77,9 +77,9 @@ const controlRecipe = async () => {
 
       // Parse ingredients to make them uniform
       state.recipe.parseIngredients();
+      clearLoader();
 
       // Render recipe to UI
-      RecipeView.logRecipe(state.recipe);
       RecipeView.renderRecipe(state.recipe);
     } catch(error) {
       // Alert the error
@@ -90,3 +90,15 @@ const controlRecipe = async () => {
 };
 
 ['hashchange', 'load'].forEach(evt => window.addEventListener(evt, controlRecipe));
+
+
+// Handlers for recipe clicks
+elements.recipeTab.addEventListener('click', evt => {
+    if(evt.target.matches('.btn-decrease, .btn-decrease *')) {
+      state.recipe.updateServings('minus');
+      RecipeView.updateServingsIngredients(state.recipe);
+    } else if(evt.target.matches('.btn-increase, .btn-increase *')) {
+      state.recipe.updateServings('plus');
+      RecipeView.updateServingsIngredients(state.recipe);
+    }
+});

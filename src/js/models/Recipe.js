@@ -103,4 +103,16 @@ export default class Recipe {
     });
     this.ingredients = parsedIngredients;
   };
+
+  updateServings(type) {
+      // Servings
+      const newServings = type === 'minus' ? this.servings - 1 : this.servings + 1;
+
+      // Ingredients
+      this.ingredients.forEach(ing => {
+          ing.count *= (newServings / this.servings);
+      });
+
+      this.servings = newServings;
+  };
 }

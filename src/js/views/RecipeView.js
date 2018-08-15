@@ -1,9 +1,22 @@
 import { elements } from './base';
+import { Fraction } from 'fractional';
 
-export const logRecipe = (recObj) => {
-     console.log(recObj);
+const formatCount = (count) => {
+    const [int, fract] = count.toString().split('.').map(el => parseInt(el, 10));
+    if(!fract) {
+        return `${int}`;
+    } else if (int === 0) {
+        const fr = new Fraction(count);
+        return `${fr.numerator}/${fr.denominator}`;
+    } else {
+        const fr = new Fraction(count-int);
+        return `${int} ${fr.numerator}/${fr.denominator}`;
+    }
 };
 
+const persistBackground = (id) => {
+    document.querySelector(`a[href*="${id}"]`).classList.add('results__link--active');
+};
 
 const renderIngredient = (ingredients) => {
      var finalMarkup = '';
@@ -13,7 +26,7 @@ const renderIngredient = (ingredients) => {
                <svg class="recipe__icon">
                     <use href="img/icons.svg#icon-check"></use>
                </svg>
-               <div class="recipe__count">${el.count}</div>
+               <div class="recipe__count">${formatCount(el.count)}</div>
                <div class="recipe__ingredient">
                     <span class="recipe__unit">${el.unit}</span>${el.ingredient}
                </div>
@@ -22,10 +35,6 @@ const renderIngredient = (ingredients) => {
           finalMarkup+=ingredientMarkup;
      })
      return finalMarkup;
-};
-
-export const clearRecipe = () => {
-     elements.recipeTab.innerHTML = '';
 };
 
 export const renderRecipe = (recipe) => {
@@ -51,12 +60,12 @@ export const renderRecipe = (recipe) => {
          <span class="recipe__info-text"> servings</span>
 
          <div class="recipe__info-buttons">
-             <button class="btn-tiny">
+             <button class="btn-tiny btn-decrease">
                  <svg>
                      <use href="img/icons.svg#icon-circle-with-minus"></use>
                  </svg>
              </button>
-             <button class="btn-tiny">
+             <button class="btn-tiny btn-increase">
                  <svg>
                      <use href="img/icons.svg#icon-circle-with-plus"></use>
                  </svg>
@@ -102,4 +111,21 @@ export const renderRecipe = (recipe) => {
  </div>`;
 
  elements.recipeTab.insertAdjacentHTML('beforeend', recipeMarkup);
+};
+
+export const clearRecipe = () => {
+    elements.recipeTab.innerHTML = '';
+};
+
+export const updateServingsIngredients = recipe => {
+    // Update servings
+    document.querySelector('.recipe__info-data--people').textContent = recipe.servings;
+
+    // Update ingredients count
+    const countElements = Array.from(document.querySelectorAll('.recipe__count'));
+    console.log('countElements :', countElements);
+    countElements.forEach((el, i) => {
+        el.textContent = formatCount(recipe.ingredients[i].count);
+        console.log('i', el.textContent);
+    });
 };
